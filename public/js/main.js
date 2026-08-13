@@ -301,7 +301,10 @@ function initApp() {
 }
 
 function fetchData() {
-    Papa.parse(CSV_URL, {
+    // Gunakan cache buster agar browser tidak menggunakan cache lama
+    const noCacheCsvUrl = CSV_URL + '&t=' + Date.now();
+    
+    Papa.parse(noCacheCsvUrl, {
         download: true,
         header: true,
         skipEmptyLines: true,
