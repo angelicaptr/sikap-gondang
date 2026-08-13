@@ -17,9 +17,6 @@ foreach ($tmpDirs as $dir) {
 }
 
 // 2. Override variabel Environment untuk mengarahkan cache & views ke /tmp
-$_ENV['VIEW_COMPILED_PATH'] = '/tmp/storage/framework/views';
-putenv('VIEW_COMPILED_PATH=/tmp/storage/framework/views');
-
 $_ENV['APP_CONFIG_CACHE'] = '/tmp/bootstrap/cache/config.php';
 $_ENV['APP_SERVICES_CACHE'] = '/tmp/bootstrap/cache/services.php';
 $_ENV['APP_PACKAGES_CACHE'] = '/tmp/bootstrap/cache/packages.php';
@@ -43,5 +40,8 @@ require __DIR__.'/../vendor/autoload.php';
 // Bootstrap Laravel and handle the request...
 /** @var Application $app */
 $app = require_once __DIR__.'/../bootstrap/app.php';
+
+// PAKSA Laravel untuk menggunakan folder /tmp/storage agar tidak error Read-Only!
+$app->useStoragePath('/tmp/storage');
 
 $app->handleRequest(Request::capture());
