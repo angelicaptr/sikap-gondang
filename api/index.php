@@ -30,16 +30,26 @@ putenv('LOG_CHANNEL=stderr');
 
 // Cache sudah diarahkan ke /tmp, Laravel tidak akan crash saat menulis cache.
 
-// 4. Jalankan Laravel
-define('LARAVEL_START', microtime(true));
+try {
+    // 4. Jalankan Laravel
+    define('LARAVEL_START', microtime(true));
 
-// Register the Composer autoloader...
-require __DIR__.'/../vendor/autoload.php';
+    // Register the Composer autoloader...
+    require __DIR__.'/../vendor/autoload.php';
 
-// Bootstrap Laravel and handle the request...
-$app = require_once __DIR__.'/../bootstrap/app.php';
+    // Bootstrap Laravel and handle the request...
+    $app = require_once __DIR__.'/../bootstrap/app.php';
 
-// PAKSA Laravel untuk menggunakan folder /tmp/storage agar tidak error Read-Only!
-$app->useStoragePath('/tmp/storage');
+    // PAKSA Laravel untuk menggunakan folder /tmp/storage agar tidak error Read-Only!
+    $app->useStoragePath('/tmp/storage');
 
-$app->handleRequest(\Illuminate\Http\Request::capture());
+    $app->handleRequest(\Illuminate\Http\Request::capture());
+} catch (\Throwable $e) {
+    http_response_code(500);
+    echo "<h1>🔥 SISTEM CRASH 🔥</h1>";
+    echo "<p>Pesan Error Asli:</p>";
+    echo "<pre style='background: #111; color: #ff5555; padding: 20px; border-radius: 8px; overflow-x: auto;'>";
+    echo htmlspecialchars((string) $e);
+    echo "</pre>";
+    exit;
+}
