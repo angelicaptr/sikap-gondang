@@ -989,7 +989,7 @@ window.openDetailModal = function(data) {
 
     const health = calculateHealthScore(data);
     
-    modalTitle.innerHTML = `Detail: ${data.nama_kk || 'Data Rumah'} <span class="${health.badgeClass} text-xs font-bold px-2 py-1 rounded ml-2 border align-middle tracking-wide">Skor: ${health.score}/39 &mdash; ${health.category}</span>`;
+    modalTitle.innerHTML = `Detail: ${data.nama_kk || 'Data Rumah'} <span class="${health.badgeClass} text-xs font-bold px-2 py-1 rounded ml-2 border align-middle tracking-wide">Skor: ${health.score}/22 &mdash; ${health.category}</span>`;
     
     let isUmkm = data.is_umkm && data.is_umkm.toLowerCase() === 'ya';
 
@@ -1071,32 +1071,28 @@ window.openDetailModal = function(data) {
                 <div class="bg-emerald-50/50 border border-emerald-100 rounded-xl p-4 shadow-sm flex flex-col items-center justify-center min-h-[140px]">
                     <div class="text-emerald-500 mb-2"><i class="fa-solid fa-toilet fa-xl"></i></div>
                     <div class="text-[10px] uppercase font-bold text-slate-500 mb-1">Jamban</div>
-                    <div class="text-sm font-semibold text-slate-800 mb-1">${data.jamban_syarat || '-'}</div>
-                    <div class="text-xs text-slate-500 leading-tight line-clamp-2" title="${data.jamban_jenis || ''}">${data.jamban_jenis || ''}</div>
+                    <div class="text-sm font-semibold text-slate-800 leading-tight line-clamp-3" title="${data.jamban_jenis || ''}">${data.jamban_jenis || '-'}</div>
                 </div>
 
                 <!-- SPAL -->
                 <div class="bg-purple-50/50 border border-purple-100 rounded-xl p-4 shadow-sm flex flex-col items-center justify-center min-h-[140px]">
                     <div class="text-purple-500 mb-2"><i class="fa-solid fa-water fa-xl"></i></div>
                     <div class="text-[10px] uppercase font-bold text-slate-500 mb-1">Sanitasi Limbah (SPAL)</div>
-                    <div class="text-sm font-semibold text-slate-800 mb-1">${data.spal_syarat || '-'}</div>
-                    <div class="text-xs text-slate-500 leading-tight line-clamp-2" title="${data.spal_kondisi || ''}">${data.spal_kondisi || ''}</div>
+                    <div class="text-sm font-semibold text-slate-800 leading-tight line-clamp-3" title="${data.spal_kondisi || ''}">${data.spal_kondisi || '-'}</div>
                 </div>
 
                 <!-- Sampah -->
                 <div class="bg-amber-50/50 border border-amber-100 rounded-xl p-4 shadow-sm flex flex-col items-center justify-center min-h-[140px]">
                     <div class="text-amber-500 mb-2"><i class="fa-solid fa-trash-can fa-xl"></i></div>
                     <div class="text-[10px] uppercase font-bold text-slate-500 mb-1">Sampah</div>
-                    <div class="text-sm font-semibold text-slate-800 mb-1">${data.sampah_syarat || '-'}</div>
-                    <div class="text-xs text-slate-500 leading-tight line-clamp-2" title="${data.sampah_kelola || ''}">${data.sampah_kelola || ''}</div>
+                    <div class="text-sm font-semibold text-slate-800 leading-tight line-clamp-3" title="${data.sampah_kelola || ''}">${data.sampah_kelola || '-'}</div>
                 </div>
 
                 <!-- Ventilasi -->
                 <div class="bg-cyan-50/50 border border-cyan-100 rounded-xl p-4 shadow-sm flex flex-col items-center justify-center min-h-[140px]">
                     <div class="text-cyan-500 mb-2"><i class="fa-solid fa-wind fa-xl"></i></div>
                     <div class="text-[10px] uppercase font-bold text-slate-500 mb-1">Ventilasi</div>
-                    <div class="text-sm font-semibold text-slate-800 mb-1">${data.ventilasi_syarat || '-'}</div>
-                    <div class="text-xs text-slate-500 leading-tight line-clamp-2" title="${data.ventilasi_kondisi || ''}">${data.ventilasi_kondisi || ''}</div>
+                    <div class="text-sm font-semibold text-slate-800 leading-tight line-clamp-3" title="${data.ventilasi_kondisi || ''}">${data.ventilasi_kondisi || '-'}</div>
                 </div>
 
                 <!-- Pencahayaan -->
@@ -1189,78 +1185,78 @@ function calculateHealthScore(row) {
 
     // 1. Ventilasi Kondisi
     let vk = safeStr(row.ventilasi_kondisi);
-    if (vk.includes('segar')) { score += 3; questionsAnswered++; }
-    else if (vk.includes('sebagian')) { score += 2; questionsAnswered++; }
-    else if (vk.includes('tidak ada') || vk.includes('sama sekali')) { score += 1; questionsAnswered++; }
+    if (vk.includes('segar')) { score += 2; questionsAnswered++; }
+    else if (vk.includes('sebagian')) { score += 0; questionsAnswered++; }
+    else if (vk.includes('tidak ada') || vk.includes('sama sekali')) { score += 0; questionsAnswered++; }
 
     // 2. Pencahayaan
-    let ps = safeStr(row.pencahayaan_syarat);
-    if (ps.includes('tidak memenuhi')) { score += 1; questionsAnswered++; }
-    else if (ps.includes('memenuhi')) { score += 3; questionsAnswered++; }
+    let ps = safeStr(row.pencahayaan_syarat) || safeStr(row.pencahayaan_kondisi);
+    if (ps.includes('tidak memenuhi')) { score += 0; questionsAnswered++; }
+    else if (ps.includes('memenuhi')) { score += 1; questionsAnswered++; }
 
-    // 3. SPAL
+    // 3. SPAL (Sanitasi)
     let sk = safeStr(row.spal_kondisi);
-    if (sk.includes('tertutup')) { score += 3; questionsAnswered++; }
-    else if (sk.includes('terbuka') || sk.includes('tidak menggenang')) { score += 2; questionsAnswered++; }
-    else if (sk.includes('menggenang')) { score += 1; questionsAnswered++; }
+    if (sk.includes('tertutup')) { score += 2; questionsAnswered++; }
+    else if (sk.includes('terbuka') || sk.includes('tidak menggenang')) { score += 1; questionsAnswered++; }
+    else if (sk.includes('menggenang')) { score += 0; questionsAnswered++; }
 
     // 4. Jamban
     let jj = safeStr(row.jamban_jenis);
-    if (jj.includes('leher angsa') && jj.includes('septic tank')) { score += 3; questionsAnswered++; }
-    else if (jj.includes('tanpa septic tank') || jj.includes('cubluk')) { score += 2; questionsAnswered++; }
-    else if (jj.includes('tidak punya') || jj.includes('babs') || jj.includes('sembarangan')) { score += 1; questionsAnswered++; }
+    if (jj.includes('leher angsa') && jj.includes('septic tank')) { score += 2; questionsAnswered++; }
+    else if (jj.includes('tanpa septic tank') || jj.includes('cubluk')) { score += 1; questionsAnswered++; }
+    else if (jj.includes('tidak punya') || jj.includes('babs') || jj.includes('sembarangan')) { score += 0; questionsAnswered++; }
 
     // 5. Air Sumber
     let as = safeStr(row.air_sumber);
-    if (as.includes('pdam') || as.includes('bor') || as.includes('terlindungi')) { score += 3; questionsAnswered++; }
-    else if (as.includes('gali') || as.includes('kadang kering')) { score += 2; questionsAnswered++; }
-    else if (as.includes('tidak terlindungi') || as.includes('kekurangan air')) { score += 1; questionsAnswered++; }
+    if (as.includes('pdam') || as.includes('bor') || as.includes('terlindungi')) { score += 2; questionsAnswered++; }
+    else if (as.includes('gali') || as.includes('kadang kering')) { score += 1; questionsAnswered++; }
+    else if (as.includes('tidak terlindungi') || as.includes('kekurangan air')) { score += 0; questionsAnswered++; }
 
     // 6. Air Kondisi
     let ak = safeStr(row.air_kondisi);
-    if (ak.includes('jernih')) { score += 3; questionsAnswered++; }
-    else if (ak.includes('kadang keruh')) { score += 2; questionsAnswered++; }
-    else if (ak.includes('keruh') || ak.includes('berbau') || ak.includes('berwarna')) { score += 1; questionsAnswered++; }
+    if (ak.includes('jernih')) { score += 2; questionsAnswered++; }
+    else if (ak.includes('kadang keruh')) { score += 1; questionsAnswered++; }
+    else if (ak.includes('keruh') || ak.includes('berbau') || ak.includes('berwarna')) { score += 0; questionsAnswered++; }
 
     // 7. Sampah
     let skel = safeStr(row.sampah_kelola);
-    if (skel.includes('diangkut')) { score += 3; questionsAnswered++; }
-    else if (skel.includes('dibakar')) { score += 2; questionsAnswered++; }
-    else if (skel.includes('sembarangan')) { score += 1; questionsAnswered++; }
+    if (skel.includes('diangkut')) { score += 1; questionsAnswered++; }
+    else if (skel.includes('dibakar')) { score += 0; questionsAnswered++; }
+    else if (skel.includes('sembarangan')) { score += 0; questionsAnswered++; }
 
     // 8. 3M Plus
     let p3m = safeStr(row.pelaksanaan_3m);
-    if (p3m === 'ya') { score += 3; questionsAnswered++; }
-    else if (p3m === 'tidak') { score += 1; questionsAnswered++; }
+    if (p3m === 'ya') { score += 1; questionsAnswered++; }
+    else if (p3m === 'tidak') { score += 0; questionsAnswered++; }
 
     // 9. Kepadatan Hunian
     let kh = safeStr(row.kepadatan_hunian);
-    if (kh.includes('lega')) { score += 3; questionsAnswered++; }
-    else if (kh.includes('cukup padat')) { score += 2; questionsAnswered++; }
-    else if (kh.includes('sangat padat')) { score += 1; questionsAnswered++; }
+    if (kh.includes('lega')) { score += 2; questionsAnswered++; }
+    else if (kh.includes('cukup padat')) { score += 1; questionsAnswered++; }
+    else if (kh.includes('sangat padat')) { score += 0; questionsAnswered++; }
 
     // 10. Lantai
     let kl = safeStr(row.kondisi_lantai);
-    if (kl.includes('keramik') || kl.includes('plester')) { score += 3; questionsAnswered++; }
-    else if (kl.includes('tanah')) { score += 1; questionsAnswered++; }
+    if (kl.includes('keramik') || kl.includes('plester')) { score += 1; questionsAnswered++; }
+    else if (kl.includes('tanah')) { score += 0; questionsAnswered++; }
 
     // 11. Dinding
     let kd = safeStr(row.kondisi_dinding);
-    if (kd.includes('tembok permanen') && !kd.includes('semi')) { score += 3; questionsAnswered++; }
-    else if (kd.includes('semi')) { score += 2; questionsAnswered++; }
-    else if (kd.includes('bambu') || kd.includes('kayu')) { score += 1; questionsAnswered++; }
+    if (kd.includes('tembok permanen') && !kd.includes('semi')) { score += 2; questionsAnswered++; }
+    else if (kd.includes('semi')) { score += 1; questionsAnswered++; }
+    else if (kd.includes('bambu') || kd.includes('kayu')) { score += 0; questionsAnswered++; }
 
     // 12. Atap
     let ka = safeStr(row.kondisi_atap);
-    if (ka.includes('ada plafon')) { score += 3; questionsAnswered++; }
-    else if (ka.includes('tanpa plafon')) { score += 2; questionsAnswered++; }
-    else if (ka.includes('bocor')) { score += 1; questionsAnswered++; }
+    if (ka.includes('ada plafon')) { score += 2; questionsAnswered++; }
+    else if (ka.includes('tanpa plafon')) { score += 1; questionsAnswered++; }
+    else if (ka.includes('bocor')) { score += 0; questionsAnswered++; }
 
     // 13. Pekarangan
     let kp = safeStr(row.kondisi_pekarangan);
-    if (kp.includes('bersih dan kering')) { score += 3; questionsAnswered++; }
-    else if (kp.includes('cukup bersih')) { score += 2; questionsAnswered++; }
-    else if (kp.includes('kotor') || kp.includes('becek')) { score += 1; questionsAnswered++; }
+    if (kp.includes('kering') || kp.includes('bersih dan kering')) { score += 2; questionsAnswered++; }
+    else if (kp.includes('cukup bersih')) { score += 1; questionsAnswered++; }
+    else if (kp.includes('kotor') || kp.includes('becek') || kp.includes('genangan')) { score += 0; questionsAnswered++; }
 
     let category = '';
     let badgeClass = '';
@@ -1270,15 +1266,12 @@ function calculateHealthScore(row) {
         return { score: 0, category: 'Data Tidak Lengkap', badgeClass: 'bg-slate-100 text-slate-600 border-slate-300' };
     }
     
-    if (score >= 30) {
+    if (score >= 16) {
         category = 'Rumah Sehat';
         badgeClass = 'bg-emerald-100 text-emerald-800 border-emerald-300';
-    } else if (score >= 20) {
+    } else {
         category = 'Kurang Sehat';
         badgeClass = 'bg-amber-100 text-amber-800 border-amber-300';
-    } else {
-        category = 'Tidak Sehat';
-        badgeClass = 'bg-red-100 text-red-800 border-red-300';
     }
 
     return { score, category, badgeClass };
@@ -1366,3 +1359,4 @@ window.downloadExcel = function() {
         XLSX.writeFile(wb, `Data_${sheetName.replace(/\s+/g, '_')}_Gondang.xlsx`);
     }
 };
+

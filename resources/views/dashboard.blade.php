@@ -246,12 +246,11 @@
             <div class="z-10 flex-1">
                 <h4 class="text-lg font-bold text-brand-900 mb-2">Sistem Evaluasi Berbasis Skor Ilmiah</h4>
                 <p class="text-sm text-slate-600 leading-relaxed mb-4 max-w-4xl">
-                    Penentuan kelayakan rumah tangga dievaluasi secara terukur menggunakan instrumen penilaian berbobot dengan <strong>Total Maksimal 39 Poin</strong>. Penilaian ditarik dari 13 variabel parameter lingkungan termasuk kelayakan ventilasi, pencahayaan, pengelolaan sanitasi air limbah (SPAL), sumber air bersih, hingga pengelolaan sampah.
+                    Penentuan kelayakan rumah tangga dievaluasi secara terukur menggunakan instrumen penilaian berbobot dengan <strong>Total Maksimal 22 Poin</strong>. Penilaian ditarik dari 13 variabel parameter lingkungan termasuk kelayakan ventilasi, pencahayaan, pengelolaan sanitasi air limbah (SPAL), sumber air bersih, hingga pengelolaan sampah.
                 </p>
                 <div class="flex flex-wrap gap-2 text-xs font-bold">
-                    <span class="bg-emerald-100 text-emerald-800 px-3 py-1.5 rounded-lg border border-emerald-200 shadow-sm"><i class="fa-solid fa-shield-virus mr-1"></i> Rumah Sehat (≥ 30 Poin)</span>
-                    <span class="bg-amber-100 text-amber-800 px-3 py-1.5 rounded-lg border border-amber-200 shadow-sm"><i class="fa-solid fa-circle-exclamation mr-1"></i> Kurang Sehat (20 - 29 Poin)</span>
-                    <span class="bg-red-100 text-red-800 px-3 py-1.5 rounded-lg border border-red-200 shadow-sm"><i class="fa-solid fa-triangle-exclamation mr-1"></i> Tidak Sehat (< 20 Poin)</span>
+                    <span class="bg-emerald-100 text-emerald-800 px-3 py-1.5 rounded-lg border border-emerald-200 shadow-sm"><i class="fa-solid fa-shield-virus mr-1"></i> Rumah Sehat (16 - 22 Poin)</span>
+                    <span class="bg-amber-100 text-amber-800 px-3 py-1.5 rounded-lg border border-amber-200 shadow-sm"><i class="fa-solid fa-circle-exclamation mr-1"></i> Kurang Sehat (0 - 15 Poin)</span>
                 </div>
             </div>
         </div>
