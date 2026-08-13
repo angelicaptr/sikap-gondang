@@ -1,5 +1,8 @@
 <?php
 
+// PAKSA HTTPS agar file JS & CSS (asset()) tidak di-block oleh browser (Mixed Content)
+$_SERVER['HTTPS'] = 'on';
+
 // 1. Siapkan folder sementara di /tmp untuk seluruh kebutuhan penulisan Laravel
 $tmpDirs = [
     '/tmp/storage/framework/views',
