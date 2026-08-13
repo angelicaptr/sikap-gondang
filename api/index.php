@@ -16,6 +16,15 @@ foreach ($tmpDirs as $dir) {
     }
 }
 
+// Salin database lokal ke /tmp agar bisa dibaca (meskipun perubahannya tidak akan permanen)
+$sourceDb = __DIR__.'/../database/database.sqlite';
+$targetDb = '/tmp/database.sqlite';
+if (file_exists($sourceDb) && !file_exists($targetDb)) {
+    copy($sourceDb, $targetDb);
+} elseif (!file_exists($targetDb)) {
+    touch($targetDb); // Buat kosong jika tidak ada
+}
+
 // 2. Override variabel Environment untuk mengarahkan cache & views ke /tmp
 $_ENV['APP_CONFIG_CACHE'] = '/tmp/bootstrap/cache/config.php';
 $_ENV['APP_SERVICES_CACHE'] = '/tmp/bootstrap/cache/services.php';
