@@ -51,6 +51,11 @@ try {
         $app['config']->set('cache.default', 'array');
         $app['config']->set('database.default', 'sqlite');
         $app['config']->set('database.connections.sqlite.database', '/tmp/database.sqlite');
+        $app['config']->set('app.maintenance.driver', 'file');
+        $app['config']->set('broadcasting.default', 'log');
+        $app['config']->set('queue.default', 'sync');
+        $app['config']->set('mail.default', 'log');
+        $app['config']->set('filesystems.default', 'local');
     });
 
     $app->handleRequest(\Illuminate\Http\Request::capture());
