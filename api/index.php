@@ -35,19 +35,15 @@ unset($_ENV['APP_PACKAGES_CACHE']);
 unset($_ENV['APP_ROUTES_CACHE']);
 
 // 4. Jalankan Laravel
-use Illuminate\Foundation\Application;
-use Illuminate\Http\Request;
-
 define('LARAVEL_START', microtime(true));
 
 // Register the Composer autoloader...
 require __DIR__.'/../vendor/autoload.php';
 
 // Bootstrap Laravel and handle the request...
-/** @var Application $app */
 $app = require_once __DIR__.'/../bootstrap/app.php';
 
 // PAKSA Laravel untuk menggunakan folder /tmp/storage agar tidak error Read-Only!
 $app->useStoragePath('/tmp/storage');
 
-$app->handleRequest(Request::capture());
+$app->handleRequest(\Illuminate\Http\Request::capture());
