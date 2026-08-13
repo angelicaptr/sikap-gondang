@@ -935,10 +935,27 @@ function initCharts() {
 
     const ctxJamban = document.getElementById('chart-jamban');
     if (ctxJamban) {
+        // Helper to split long labels into multiple lines
+        const wrapText = (text, maxLength) => {
+            const words = text.split(' ');
+            let lines = [];
+            let currentLine = words[0];
+            for (let i = 1; i < words.length; i++) {
+                if (currentLine.length + words[i].length + 1 <= maxLength) {
+                    currentLine += ' ' + words[i];
+                } else {
+                    lines.push(currentLine);
+                    currentLine = words[i];
+                }
+            }
+            lines.push(currentLine);
+            return lines;
+        };
+
         charts.jamban = new Chart(ctxJamban, {
             type: 'bar',
             data: {
-                labels: Object.keys(jambanCounts),
+                labels: Object.keys(jambanCounts).map(l => wrapText(l, 18)),
                 datasets: [{
                     label: 'Jumlah Rumah',
                     data: Object.values(jambanCounts),
@@ -950,11 +967,26 @@ function initCharts() {
                 responsive: true,
                 maintainAspectRatio: false,
                 plugins: {
-                    legend: { display: false }
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            title: (context) => {
+                                // Join the array back into a single string for the tooltip title
+                                return context[0].label.replace(/,/g, ' ');
+                            }
+                        }
+                    }
                 },
                 scales: {
                     y: { beginAtZero: true, ticks: { precision: 0 } },
-                    x: { grid: { display: false } }
+                    x: { 
+                        grid: { display: false },
+                        ticks: {
+                            maxRotation: 0, // Force labels to stay horizontal
+                            minRotation: 0,
+                            font: { size: 10 }
+                        }
+                    }
                 }
             }
         });
