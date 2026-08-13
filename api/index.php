@@ -28,11 +28,7 @@ putenv('APP_DEBUG=true');
 $_ENV['LOG_CHANNEL'] = 'stderr';
 putenv('LOG_CHANNEL=stderr');
 
-// 3. Matikan penulisan cache otomatis yang bikin crash
-unset($_ENV['APP_CONFIG_CACHE']);
-unset($_ENV['APP_SERVICES_CACHE']);
-unset($_ENV['APP_PACKAGES_CACHE']);
-unset($_ENV['APP_ROUTES_CACHE']);
+// Cache sudah diarahkan ke /tmp, Laravel tidak akan crash saat menulis cache.
 
 // 4. Jalankan Laravel
 define('LARAVEL_START', microtime(true));
