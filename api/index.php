@@ -27,6 +27,8 @@ $_ENV['APP_DEBUG'] = 'true';
 putenv('APP_DEBUG=true');
 $_ENV['LOG_CHANNEL'] = 'stderr';
 putenv('LOG_CHANNEL=stderr');
+$_ENV['SESSION_DRIVER'] = 'cookie';
+putenv('SESSION_DRIVER=cookie');
 
 // Cache sudah diarahkan ke /tmp, Laravel tidak akan crash saat menulis cache.
 
