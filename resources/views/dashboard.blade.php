@@ -441,13 +441,13 @@
             </div>
             
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                <a href="#" class="group bg-white p-5 rounded-xl border border-slate-200 shadow-sm hover:shadow-md hover:border-brand-300 transition-all flex items-start gap-4">
+                <a href="{{ asset('dokumen/sop.pdf') }}" target="_blank" class="group bg-white p-5 rounded-xl border border-slate-200 shadow-sm hover:shadow-md hover:border-brand-300 transition-all flex items-start gap-4">
                     <div class="bg-red-50 text-red-500 p-3 rounded-lg group-hover:bg-red-500 group-hover:text-white transition-colors">
                         <i class="fa-solid fa-file-pdf fa-lg"></i>
                     </div>
                     <div>
                         <h5 class="font-semibold text-slate-800 text-sm mb-1 group-hover:text-brand-600 transition-colors">SOP Pemutakhiran Data</h5>
-                        <p class="text-xs text-slate-500">Panduan entry data 2024</p>
+                        <p class="text-xs text-slate-500">Panduan entry data 2026</p>
                     </div>
                 </a>
                 
@@ -461,17 +461,17 @@
                     </div>
                 </a>
 
-                <a href="#" class="group bg-white p-5 rounded-xl border border-slate-200 shadow-sm hover:shadow-md hover:border-brand-300 transition-all flex items-start gap-4">
+                <a href="{{ asset('dokumen/spesifikasi-papan.pdf') }}" target="_blank" class="group bg-white p-5 rounded-xl border border-slate-200 shadow-sm hover:shadow-md hover:border-brand-300 transition-all flex items-start gap-4">
                     <div class="bg-amber-50 text-amber-500 p-3 rounded-lg group-hover:bg-amber-500 group-hover:text-white transition-colors">
                         <i class="fa-solid fa-file-image fa-lg"></i>
                     </div>
                     <div>
-                        <h5 class="font-semibold text-slate-800 text-sm mb-1 group-hover:text-brand-600 transition-colors">Spesifikasi Plakat</h5>
+                        <h5 class="font-semibold text-slate-800 text-sm mb-1 group-hover:text-brand-600 transition-colors">Spesifikasi Papan</h5>
                         <p class="text-xs text-slate-500">Desain & Ukuran Standar</p>
                     </div>
                 </a>
 
-                <a href="#" class="group bg-white p-5 rounded-xl border border-slate-200 shadow-sm hover:shadow-md hover:border-brand-300 transition-all flex items-start gap-4">
+                <a href="{{ asset('dokumen/rab-keuangan.xlsx') }}" target="_blank" class="group bg-white p-5 rounded-xl border border-slate-200 shadow-sm hover:shadow-md hover:border-brand-300 transition-all flex items-start gap-4">
                     <div class="bg-emerald-50 text-emerald-500 p-3 rounded-lg group-hover:bg-emerald-500 group-hover:text-white transition-colors">
                         <i class="fa-solid fa-file-invoice-dollar fa-lg"></i>
                     </div>
