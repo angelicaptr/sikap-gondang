@@ -266,6 +266,13 @@ function initApp() {
             handleFilterChange();
         });
     }
+    
+    const umkmSearchInput = document.getElementById('umkm-search-input');
+    if (umkmSearchInput) {
+        umkmSearchInput.addEventListener('input', () => {
+            renderUMKM();
+        });
+    }
 
     // Pagination buttons
     document.getElementById('btn-prev')?.addEventListener('click', () => {
@@ -651,6 +658,58 @@ window.openMapModal = function() {
     }
 };
 
+window.switchMap = function(type) {
+    const img = document.getElementById('map-image');
+    const title = document.getElementById('map-modal-title');
+    const tabPersil = document.getElementById('tab-persil');
+    const tabAdministrasi = document.getElementById('tab-administrasi');
+    const baseUrl = (window.APP_CONFIG && window.APP_CONFIG.imgBaseUrl) ? window.APP_CONFIG.imgBaseUrl : '/img';
+
+    if (!img || !tabPersil || !tabAdministrasi) return;
+
+    if (type === 'persil') {
+        img.src = `${baseUrl}/peta-persil.png`;
+        title.innerHTML = '<i class="fa-solid fa-map-location-dot text-brand-500 mr-2"></i> Peta Persil Desa Gondang';
+        
+        tabPersil.className = 'px-4 py-1.5 text-sm font-semibold rounded-md bg-white text-brand-700 shadow-sm transition-all';
+        tabAdministrasi.className = 'px-4 py-1.5 text-sm font-semibold rounded-md text-slate-500 hover:text-slate-700 transition-all';
+    } else if (type === 'administrasi') {
+        img.src = `${baseUrl}/peta-gondang.png`;
+        title.innerHTML = '<i class="fa-solid fa-map text-brand-500 mr-2"></i> Peta Administrasi Desa Gondang';
+        
+        tabAdministrasi.className = 'px-4 py-1.5 text-sm font-semibold rounded-md bg-white text-brand-700 shadow-sm transition-all';
+        tabPersil.className = 'px-4 py-1.5 text-sm font-semibold rounded-md text-slate-500 hover:text-slate-700 transition-all';
+    }
+
+    if (typeof resetMapZoom === 'function') {
+        resetMapZoom();
+    }
+};
+
+window.switchPreviewMap = function(type) {
+    const previewImg = document.getElementById('preview-map-image');
+    const tabPersil = document.getElementById('preview-tab-persil');
+    const tabAdmin = document.getElementById('preview-tab-administrasi');
+    const baseUrl = (window.APP_CONFIG && window.APP_CONFIG.imgBaseUrl) ? window.APP_CONFIG.imgBaseUrl : '/img';
+
+    if (!previewImg || !tabPersil || !tabAdmin) return;
+
+    if(type === 'persil') {
+        previewImg.src = `${baseUrl}/peta-persil.png`;
+        tabPersil.className = 'px-3 py-1.5 text-xs font-semibold rounded-md bg-white text-brand-700 shadow-sm transition-all';
+        tabAdmin.className = 'px-3 py-1.5 text-xs font-semibold rounded-md text-slate-500 hover:text-slate-700 transition-all';
+    } else {
+        previewImg.src = `${baseUrl}/peta-gondang.png`;
+        tabAdmin.className = 'px-3 py-1.5 text-xs font-semibold rounded-md bg-white text-brand-700 shadow-sm transition-all';
+        tabPersil.className = 'px-3 py-1.5 text-xs font-semibold rounded-md text-slate-500 hover:text-slate-700 transition-all';
+    }
+    
+    // Sync the modal map state
+    if (typeof switchMap === 'function') {
+        switchMap(type);
+    }
+};
+
 window.closeMapModal = function() {
     const modal = document.getElementById('map-modal');
     const modalContent = document.getElementById('map-modal-content');
@@ -772,10 +831,27 @@ function renderUMKM() {
     const umkmList = document.getElementById('umkm-list');
     if (!umkmList) return;
 
-    const umkmData = filteredData.filter(row => row.is_umkm && row.is_umkm.toLowerCase() === 'ya');
+    const umkmSearchInput = document.getElementById('umkm-search-input');
+    const searchVal = umkmSearchInput ? umkmSearchInput.value.toLowerCase().trim() : '';
+
+    const umkmData = filteredData.filter(row => {
+        if (!row.is_umkm || row.is_umkm.toLowerCase() !== 'ya') return false;
+        
+        if (searchVal) {
+            const usaha = (row.nama_usaha || '').toLowerCase();
+            const produk = (row.produk_jasa || '').toLowerCase();
+            const pemilik = (row.nama_kk || '').toLowerCase();
+            
+            return usaha.includes(searchVal) || 
+                   produk.includes(searchVal) || 
+                   pemilik.includes(searchVal);
+        }
+        
+        return true;
+    });
     
     if (umkmData.length === 0) {
-        umkmList.innerHTML = `<div class="text-center text-slate-400 py-8 text-sm">Belum ada data UMKM tercatat untuk wilayah ini.</div>`;
+        umkmList.innerHTML = `<div class="text-center text-slate-400 py-8 text-sm">Tidak ada data UMKM yang cocok dengan pencarian Anda.</div>`;
         return;
     }
 
@@ -1220,21 +1296,24 @@ window.downloadExcel = function() {
     const wb = XLSX.utils.book_new();
 
     // Helper to format row data for Excel
-    const formatRowForExcel = (row) => ({
-        "Kode Rumah": row.kode_rumah || "-",
-        "Dusun": row.dusun || "-",
-        "RT/RW": formatRtRw(row.rt_rw),
-        "Nama Kepala Keluarga": row.nama_kk || "-",
-        "Nama Responden": row.nama_responden || "-",
-        "Usia Responden": row.usia ? `${row.usia} Tahun` : "-",
-        "Jumlah Jiwa": row.jml_jiwa || "-",
-        "Pelaku UMKM": row.is_umkm && row.is_umkm.toLowerCase() === 'ya' ? 'Ya' : 'Tidak',
-        "Nama Usaha": row.nama_usaha || "-",
-        "Jenis Usaha": row.jenis_usaha || "-",
-        "Produk Jasa": row.produk_jasa || "-",
-        "Kategori Kesehatan": row.kategori_sehat || "-",
-        "Skor Kesehatan": row.skor_sehat || 0
-    });
+    const formatRowForExcel = (row) => {
+        const health = calculateHealthScore(row);
+        return {
+            "Kode Rumah": row.kode_rumah || "-",
+            "Dusun": row.dusun || "-",
+            "RT/RW": formatRtRw(row.rt_rw),
+            "Nama Kepala Keluarga": row.nama_kk || "-",
+            "Nama Responden": row.nama_responden || "-",
+            "Usia Responden": row.usia ? `${row.usia} Tahun` : "-",
+            "Jumlah Jiwa": row.jumlah_anggota || "-",
+            "Pelaku UMKM": row.is_umkm && row.is_umkm.toLowerCase() === 'ya' ? 'Ya' : 'Tidak',
+            "Nama Usaha": row.nama_usaha || "-",
+            "Jenis Usaha": row.jenis_usaha || "-",
+            "Produk Jasa": row.produk_jasa || "-",
+            "Kategori Kesehatan": health.category,
+            "Skor Kesehatan": health.score
+        };
+    };
 
     if (dusunVal === 'semua') {
         // Multi-sheet logic based on allData or filteredData? 

@@ -157,8 +157,8 @@
     <nav class="bg-white/90 backdrop-blur-md shadow-sm sticky top-0 z-50 transition-all duration-300">
         <div class="container mx-auto px-4 lg:px-8 py-3 flex flex-col md:flex-row justify-between items-center gap-4">
             <div class="flex items-center gap-4">
-                <img src="{{ asset('img/logo_undip.png') }}" alt="Logo UNDIP" class="h-10 w-auto object-contain drop-shadow-sm">
                 <img src="{{ asset('img/logo_pemalang.png') }}" alt="Logo Pemalang" class="h-10 w-auto object-contain drop-shadow-sm">
+                <img src="{{ asset('img/logo_undip.png') }}" alt="Logo UNDIP" class="h-10 w-auto object-contain drop-shadow-sm">
                 <img src="{{ asset('img/logo_kkn.jpeg') }}" alt="Logo KKN" class="h-10 w-auto object-contain rounded-full shadow-sm">
                 <div class="h-8 w-px bg-slate-300 mx-1 hidden md:block"></div>
                 <h1 class="text-xl font-bold text-brand-900 tracking-tight hidden sm:block">SIKAP Gondang</h1>
@@ -235,7 +235,7 @@
     </div>
     
     <!-- Scoring Methodology Banner (Moved from Analytics) -->
-    <div class="container mx-auto px-4 lg:px-8 relative z-20 mb-8">
+    <div class="container mx-auto px-4 lg:px-8 relative z-20 mb-2">
         <div class="bg-gradient-to-br from-brand-50 to-white border border-brand-100 rounded-2xl p-6 flex flex-col md:flex-row gap-6 items-center shadow-sm relative overflow-hidden">
             <div class="absolute right-0 top-0 opacity-5 pointer-events-none transform translate-x-1/4 -translate-y-1/4">
                 <i class="fa-solid fa-microscope" style="font-size: 12rem;"></i>
@@ -266,7 +266,7 @@
         <p class="text-slate-500 max-w-lg mx-auto text-lg">Coba ubah kombinasi filter Dusun dan RT Anda.</p>
     </div>
     
-    <main id="main-content" class="container mx-auto px-4 lg:px-8 py-12 space-y-24">
+    <main id="main-content" class="container mx-auto px-4 lg:px-8 pb-12 pt-2 space-y-20">
         
         <!-- Section 1: Data Rumah & Pencarian -->
         <!-- Public Lock Message -->
@@ -299,6 +299,9 @@
                         </div>
                         <input type="text" id="search-input" class="bg-white border border-slate-200 text-slate-900 text-sm rounded-xl focus:ring-brand-500 focus:border-brand-500 block w-full pl-10 p-3 shadow-sm transition-all" placeholder="Cari Nama KK atau No. Rumah...">
                     </div>
+                    <a href="https://forms.gle/Njp7xDF5QfkQXFrk8" target="_blank" rel="noopener noreferrer" class="bg-brand-600 hover:bg-brand-700 text-white px-5 py-3 rounded-xl shadow-sm transition-all text-sm font-bold flex items-center justify-center gap-2 flex-shrink-0 whitespace-nowrap">
+                        <i class="fa-solid fa-plus"></i> Form Pendataan
+                    </a>
                     <button onclick="downloadExcel()" class="bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-3 rounded-xl shadow-sm transition-all text-sm font-bold flex items-center justify-center gap-2 flex-shrink-0 whitespace-nowrap">
                         <i class="fa-solid fa-file-excel"></i> Unduh Excel
                     </button>
@@ -353,7 +356,13 @@
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 <!-- Static Map -->
                 <div class="lg:col-span-2 bg-white rounded-2xl p-6 shadow-sm border border-slate-200 flex flex-col h-full">
-                    <h3 class="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2"><i class="fa-solid fa-map-location-dot text-brand-500"></i> Peta Persil Desa Gondang</h3>
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-3">
+                        <h3 class="text-xl font-bold text-slate-800 flex items-center gap-2"><i class="fa-solid fa-map-location-dot text-brand-500"></i> Katalog Peta Desa</h3>
+                        <div class="flex bg-slate-100 p-1 rounded-lg w-fit border border-slate-200">
+                            <button id="preview-tab-persil" onclick="switchPreviewMap('persil')" class="px-3 py-1.5 text-xs font-semibold rounded-md bg-white text-brand-700 shadow-sm transition-all">Peta Persil</button>
+                            <button id="preview-tab-administrasi" onclick="switchPreviewMap('administrasi')" class="px-3 py-1.5 text-xs font-semibold rounded-md text-slate-500 hover:text-slate-700 transition-all">Peta Administrasi</button>
+                        </div>
+                    </div>
                     
                     <!-- Creative Frame with Blueprint/Grid Background -->
                     <div class="relative w-full flex-1 bg-slate-50 border border-slate-200 rounded-xl overflow-hidden group cursor-zoom-in min-h-[350px] flex items-center justify-center p-3 sm:p-5" onclick="openMapModal()">
@@ -361,7 +370,7 @@
                         <div class="absolute inset-0 opacity-40" style="background-image: radial-gradient(#94a3b8 1px, transparent 1px); background-size: 20px 20px;"></div>
                         
                         <!-- The Map Image (No Cropping) -->
-                        <img src="{{ asset('img/peta-persil.png') }}" alt="Peta Persil Desa" class="relative z-10 w-full h-full max-h-[400px] object-contain transition-all duration-700 ease-out group-hover:scale-[1.03] group-hover:drop-shadow-2xl drop-shadow-md" onerror="this.onerror=null; this.src='https://placehold.co/800x400/e2e8f0/64748b?text=Peta+Persil+Belum+Tersedia';">
+                        <img id="preview-map-image" src="{{ asset('img/peta-persil.png') }}" alt="Peta Desa Gondang" class="relative z-10 w-full h-full max-h-[400px] object-contain transition-all duration-700 ease-out group-hover:scale-[1.03] group-hover:drop-shadow-2xl drop-shadow-md" onerror="this.onerror=null; this.src='https://placehold.co/800x400/e2e8f0/64748b?text=Peta+Belum+Tersedia';">
                         
                         <!-- Elegant Hover Overlay -->
                         <div class="absolute inset-0 z-20 pointer-events-none bg-gradient-to-t from-slate-900/50 via-slate-900/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end items-center pb-8">
@@ -376,8 +385,14 @@
                 
                 <!-- UMKM List -->
                 <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden flex flex-col h-[516px]">
-                    <div class="p-5 border-b border-slate-100 bg-slate-50/50">
+                    <div class="p-4 border-b border-slate-100 bg-slate-50/50 flex flex-col gap-3">
                         <h4 class="font-bold text-slate-800"><i class="fa-solid fa-store mr-2 text-amber-500"></i> Katalog UMKM</h4>
+                        <div class="relative w-full">
+                            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-slate-400">
+                                <i class="fa-solid fa-magnifying-glass text-xs"></i>
+                            </div>
+                            <input type="text" id="umkm-search-input" class="bg-white border border-slate-200 text-slate-700 text-xs rounded-lg focus:ring-amber-500 focus:border-amber-500 block w-full pl-9 p-2 shadow-sm transition-all" placeholder="Cari nama usaha atau produk...">
+                        </div>
                     </div>
                     <div id="umkm-list" class="p-5 overflow-y-auto custom-scrollbar flex-1 space-y-4">
                         <!-- UMKM Cards injected by JS -->
@@ -508,9 +523,15 @@
     <!-- Map Modal -->
     <div id="map-modal" class="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/90 backdrop-blur-sm opacity-0 pointer-events-none transition-all duration-300 p-2 sm:p-6" onclick="if(event.target === this) closeMapModal()">
         <div class="bg-white rounded-2xl w-full max-w-7xl h-full max-h-[95vh] flex flex-col shadow-2xl overflow-hidden relative transform scale-95 transition-transform duration-300" id="map-modal-content">
-            <div class="flex items-center justify-between p-4 border-b border-slate-100 bg-slate-50 z-10 shadow-sm flex-shrink-0">
-                <h3 class="text-lg font-bold text-slate-800"><i class="fa-solid fa-map-location-dot text-brand-500 mr-2"></i> Peta Persil Desa Gondang</h3>
-                <div class="flex items-center gap-2">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between p-4 border-b border-slate-100 bg-slate-50 z-10 shadow-sm flex-shrink-0 gap-4">
+                <div class="flex flex-col gap-3">
+                    <h3 id="map-modal-title" class="text-lg font-bold text-slate-800"><i class="fa-solid fa-map-location-dot text-brand-500 mr-2"></i> Peta Persil Desa Gondang</h3>
+                    <div class="flex bg-slate-200/70 p-1 rounded-lg w-fit">
+                        <button id="tab-persil" onclick="switchMap('persil')" class="px-4 py-1.5 text-sm font-semibold rounded-md bg-white text-brand-700 shadow-sm transition-all">Peta Persil</button>
+                        <button id="tab-administrasi" onclick="switchMap('administrasi')" class="px-4 py-1.5 text-sm font-semibold rounded-md text-slate-500 hover:text-slate-700 transition-all">Peta Administrasi</button>
+                    </div>
+                </div>
+                <div class="flex items-start sm:items-center gap-2 self-end sm:self-center">
                     <button onclick="resetMapZoom()" class="text-slate-600 hover:text-brand-600 px-3 py-1.5 rounded-lg text-sm font-bold hover:bg-slate-200 transition-colors bg-slate-200 border border-slate-300 shadow-sm">
                         <i class="fa-solid fa-rotate-right mr-1"></i> Reset View
                     </button>
@@ -524,7 +545,7 @@
                 <div class="absolute inset-0 opacity-30 pointer-events-none z-0" style="background-image: radial-gradient(#94a3b8 1px, transparent 1px); background-size: 20px 20px;"></div>
                 
                 <div id="map-transform-wrapper" style="transform-origin: 0 0; transition: transform 0.05s ease-out;" class="w-full h-full flex items-center justify-center pointer-events-none relative z-10">
-                    <img src="{{ asset('img/peta-persil.png') }}" alt="Peta Persil Desa Lengkap" class="max-w-full max-h-full w-auto h-auto object-contain drop-shadow-xl" onerror="this.src='https://placehold.co/1200x800/e2e8f0/64748b?text=Peta+Persil+Belum+Tersedia';">
+                    <img id="map-image" src="{{ asset('img/peta-persil.png') }}" alt="Peta Desa Gondang" class="max-w-full max-h-full w-auto h-auto object-contain drop-shadow-xl" onerror="this.src='https://placehold.co/1200x800/e2e8f0/64748b?text=Peta+Belum+Tersedia';">
                 </div>
             </div>
             <div class="absolute bottom-6 left-1/2 transform -translate-x-1/2 bg-slate-900/80 backdrop-blur border border-slate-700 text-white px-5 py-2.5 rounded-full text-sm font-medium pointer-events-none shadow-xl z-20 flex items-center gap-4">
