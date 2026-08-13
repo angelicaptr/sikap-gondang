@@ -4,7 +4,8 @@
     "type": "module",
     "scripts": {
         "build": "vite build",
-        "dev": "vite"
+        "dev": "vite",
+        "vercel-build": "vite build && node -e \"try { require('fs').unlinkSync('public/index.php') } catch(e) {}\""
     },
     "devDependencies": {
         "@tailwindcss/vite": "^4.0.0",
