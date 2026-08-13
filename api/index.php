@@ -45,6 +45,14 @@ try {
     // PAKSA Laravel untuk menggunakan folder /tmp/storage agar tidak error Read-Only!
     $app->useStoragePath('/tmp/storage');
 
+    // Override config secara paksa (Bypass .env) agar Vercel tidak crash
+    $app->booting(function() use ($app) {
+        $app['config']->set('session.driver', 'cookie');
+        $app['config']->set('cache.default', 'array');
+        $app['config']->set('database.default', 'sqlite');
+        $app['config']->set('database.connections.sqlite.database', '/tmp/database.sqlite');
+    });
+
     $app->handleRequest(\Illuminate\Http\Request::capture());
 } catch (\Throwable $e) {
     http_response_code(500);
