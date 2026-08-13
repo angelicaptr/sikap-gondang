@@ -901,7 +901,7 @@ function initCharts() {
         let air = row.air_sumber || 'Tidak Diketahui';
         airCounts[air] = (airCounts[air] || 0) + 1;
         
-        let jamban = row.jamban_syarat || 'Tidak Diketahui';
+        let jamban = row.jamban_jenis || 'Tidak Diketahui';
         jambanCounts[jamban] = (jambanCounts[jamban] || 0) + 1;
         
         let sampah = row.sampah_kelola || 'Tidak Diketahui';
