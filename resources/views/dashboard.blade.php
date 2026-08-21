@@ -471,7 +471,7 @@
                     </div>
                 </a>
 
-                <a href="{{ asset('dokumen/rab-keuangan.xlsx') }}" target="_blank" class="group bg-white p-5 rounded-xl border border-slate-200 shadow-sm hover:shadow-md hover:border-brand-300 transition-all flex items-start gap-4">
+                <a href="{{ asset('dokumen/laporan-keuangan.xlsx') }}" target="_blank" class="group bg-white p-5 rounded-xl border border-slate-200 shadow-sm hover:shadow-md hover:border-brand-300 transition-all flex items-start gap-4">
                     <div class="bg-emerald-50 text-emerald-500 p-3 rounded-lg group-hover:bg-emerald-500 group-hover:text-white transition-colors">
                         <i class="fa-solid fa-file-invoice-dollar fa-lg"></i>
                     </div>
